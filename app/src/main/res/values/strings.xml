@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Stackoverflow Users</string>
+    <string name="error_message">We are sorry, an error occurred. Please try again later.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="noUsers">No Users</string>
+    <string name="menu_filter">Filter</string>
+    <string name="refresh">Refresh</string>
+    <string name="title_activity_user_detail">User Detail</string>
+    <string name="action_settings">Settings</string>
+    <string name="loading_users_error">Error while loading users</string>
+    <string name="no_users_all">You have no users</string>
+    <string name="label_all">Last 20 Users</string>
+    <string name="nav_all">Last 20 Users</string>
+    <string name="no_data">No data</string>
+    <string name="created_at">Created at:</string>
+    <string name="reputation">REPUTATION</string>
+</resources>

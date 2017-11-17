@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <data>
+        <variable name="user" type="com.chefless.ela.stackoverflowusers.data.models.User"/>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollableContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/detailContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:id="@+id/iv_main_image"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="false"
+                    android:layout_margin="10dp"
+                    android:contentDescription="@{user.display_name}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:text="@{user.display_name}"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold"
+                    android:textColor="@color/titleColor"
+                    android:padding="@dimen/list_item_padding"
+                    tools:text="T.J.Crowder"
+                    android:layout_toEndOf="@+id/iv_main_image"
+                    android:layout_toRightOf="@+id/iv_main_image"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_reputation"
+                    android:text="@{user.getReputationAsString()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/titleColor"
+                    android:textStyle="bold"
+                    tools:text="986, 072"
+                    android:padding="@dimen/list_item_padding"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_toEndOf="@+id/iv_main_image"
+                    android:layout_toRightOf="@+id/iv_main_image"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_reputation_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:letterSpacing="0.1"
+                    android:textColor="@color/grayDetail"
+                    android:text="@string/reputation"
+                    android:padding="@dimen/list_item_padding"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_toRightOf="@+id/tv_reputation"
+                    android:layout_toEndOf="@+id/tv_reputation"
+                    android:layout_marginTop="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_member_id"
+                    android:text='@{"Account Id " + user.getUser_id()}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    tools:text="Account Id 4324321"
+                    android:layout_below="@+id/tv_reputation"
+                    android:layout_toEndOf="@+id/iv_main_image"
+                    android:layout_toRightOf="@+id/iv_main_image"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawableStart="@drawable/ic_person_black_24dp"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/list_item_padding"
+                    android:visibility="@{user.getUser_id()==0 ? View.INVISIBLE : View.VISIBLE}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_time_since_creation"
+                    android:text='@{"Member from " + user.getTimeSinceCreation()}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    tools:text="Member for 8 years, 3 months"
+                    android:layout_below="@+id/tv_member_id"
+                    android:layout_toEndOf="@+id/iv_main_image"
+                    android:layout_toRightOf="@+id/iv_main_image"
+                    android:padding="@dimen/list_item_padding"
+                    android:drawableLeft="@drawable/ic_time_black_24dp"
+                    android:drawableStart="@drawable/ic_time_black_24dp"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:visibility="@{TextUtils.isEmpty(user.getTimeSinceCreation()) ? View.INVISIBLE : View.VISIBLE}"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:text="@{user.getLocation()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    tools:text="United Kingdom"
+                    android:layout_below="@+id/tv_time_since_creation"
+                    android:layout_toEndOf="@+id/iv_main_image"
+                    android:layout_toRightOf="@+id/iv_main_image"
+                    android:padding="@dimen/list_item_padding"
+                    android:drawableLeft="@drawable/ic_location_black_24dp"
+                    android:drawableStart="@drawable/ic_location_black_24dp"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:visibility="@{TextUtils.isEmpty(user.getLocation) ? View.INVISIBLE : View.VISIBLE}"
+                    />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/no_data"
+                android:text="@string/no_data"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/pb_loading_data"
+                android:layout_height="42dp"
+                android:layout_width="42dp"
+                android:layout_centerInParent="true"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</layout>
+
