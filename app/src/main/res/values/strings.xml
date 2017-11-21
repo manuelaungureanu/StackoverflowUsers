@@ -16,4 +16,10 @@
     <string name="no_data">No data</string>
     <string name="created_at">Created at:</string>
     <string name="reputation">REPUTATION</string>
+    <string name="follow">Follow</string>
+    <string name="following">Following</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="block">Block</string>
+    <string name="blocked">Blocked</string>
+    <string name="unblock">Unblock</string>
 </resources>

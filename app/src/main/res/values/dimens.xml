@@ -5,5 +5,6 @@
     <dimen name="list_item_padding">5dp</dimen>
     <dimen name="list_item_padding_v">5dp</dimen>
     <dimen name="list_item_padding_h">5dp</dimen>
+    <dimen name="button_margin_h">5dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

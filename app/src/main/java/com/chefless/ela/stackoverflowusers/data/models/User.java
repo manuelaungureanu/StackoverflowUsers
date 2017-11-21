@@ -20,6 +20,9 @@ public class User implements Serializable {
     private String location;
     private long creation_date;
 
+    private boolean followed = false;
+    private boolean blocked = false;
+
     public User(int id, String name, long reputation, String location) {
         this.user_id = id;
         this.display_name = name;
@@ -83,5 +86,21 @@ public class User implements Serializable {
         long now = Calendar.getInstance().getTimeInMillis();
         //long now = System.currentTimeMillis();
         return DateUtils.getRelativeTimeSpanString(creation_date*1000, now, DateUtils.YEAR_IN_MILLIS, DateUtils.FORMAT_SHOW_DATE).toString();
+    }
+
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }

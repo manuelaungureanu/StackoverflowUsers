@@ -1,14 +1,20 @@
 package com.chefless.ela.stackoverflowusers.users;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
+import com.chefless.ela.stackoverflowusers.R;
 import com.chefless.ela.stackoverflowusers.data.models.User;
 import com.chefless.ela.stackoverflowusers.databinding.UsersListItemBinding;
 
@@ -46,10 +52,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserAdapterV
     }
 
     @Override
-    public void onBindViewHolder(UserAdapterViewHolder holder, int position) {
-        User item = mData.get(position);
+    public void onBindViewHolder(final UserAdapterViewHolder holder, final int position) {
+        final User item = mData.get(position);
+        final Context context = holder.itemView.getContext();
         holder.binding.setItem(item);
-        holder.binding.setPosition(position+1);
+        holder.binding.setContext(context);
 
         if(item==null)
             return;
@@ -60,8 +67,57 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserAdapterV
 
         Glide.with(holder.itemView.getContext())
                 .load(url)
+                .fitCenter()
                 .thumbnail(0.1f)
                 .into(holder.binding.ivThumb);
+
+        holder.binding.btnFollowUnfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.setFollowed(!item.isFollowed());
+                notifyItemChanged(position);
+            }
+        });
+
+        //change name in "Unfollow" when touching the button in following state
+        holder.binding.btnFollowUnfollow.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if(item.isFollowed())
+                        holder.binding.btnFollowUnfollow.setText(R.string.unfollow);
+                }
+                return false;
+            }
+        });
+
+        holder.binding.btnBlockUnblock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.setBlocked(!item.isBlocked());
+                notifyItemChanged(position);
+            }
+        });
+
+        //change name in "Unblock" when touching the button in blocked state
+        holder.binding.btnBlockUnblock.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if(item.isBlocked())
+                        holder.binding.btnBlockUnblock.setText(R.string.unblock);
+                }
+                return false;
+            }
+        });
+
+        //entire view becomes unclickable for blocked users
+        holder.itemView.setClickable(!item.isBlocked());
+        holder.itemView.setEnabled(!item.isBlocked());
+
+        //cannot follow someone blocked
+        holder.binding.btnFollowUnfollow.setClickable(!item.isBlocked());
+        holder.binding.btnFollowUnfollow.setEnabled(!item.isBlocked());
     }
 
     @Override
