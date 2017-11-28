@@ -171,7 +171,7 @@ public class UsersFragment extends Fragment implements UsersContract.View, Users
     //region UsersAdapter.UsersAdapterOnClickHandler implementation
     @Override
     public void onClick(User user) {
-        showUserDetailsUi(user.getUser_id());
+        mPresenter.openUserDetails(user);
     }
     //endregion
 }
