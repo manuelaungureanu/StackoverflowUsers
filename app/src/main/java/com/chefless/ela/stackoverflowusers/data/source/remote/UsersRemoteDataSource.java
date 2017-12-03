@@ -25,12 +25,10 @@ public class UsersRemoteDataSource implements UsersDataSource {
 
     private static UsersRemoteDataSource INSTANCE;
 
-    private static final int SERVICE_LATENCY_IN_MILLIS = 5000;
-
     private final static Map<String, User> USERS_SERVICE_DATA;
 
     static {
-        USERS_SERVICE_DATA = new LinkedHashMap<>(2);
+        USERS_SERVICE_DATA = new LinkedHashMap<>();
     }
 
     public static UsersRemoteDataSource getInstance() {
@@ -53,9 +51,12 @@ public class UsersRemoteDataSource implements UsersDataSource {
             String uUsersJsonAsString = jsonRootObject.getString(NetworkUtils.STATIC_USERS_RESPONSE_RESULTS_NODE);
 
             User[] arrayResult =  NetworkUtils.parseJSONToUsers(uUsersJsonAsString);
-
             if(arrayResult==null || arrayResult.length==0)
                 return new ArrayList<>();
+
+            for (User u:arrayResult) {
+                USERS_SERVICE_DATA.put(String.valueOf(u.getUser_id()), u);
+            }
 
             return new ArrayList<>(Arrays.asList(arrayResult));
 
@@ -66,14 +67,17 @@ public class UsersRemoteDataSource implements UsersDataSource {
             e.printStackTrace();
             return null;
         }
-
-
     }
 
     @Override
     public User getUser(@NonNull int uUserId) {
         if(uUserId==0)
             return null;
+
+        final User user = USERS_SERVICE_DATA.get(String.valueOf(uUserId));
+        if(user!=null)
+            return user;
+
         try {
             String url = String.format("%s/%s/%s", NetworkUtils.STATIC_USERS_BASE_URL, uUserId, NetworkUtils.STATIC_USERS_OTHER_PARAMS);
             URL uUserUrl = new URL(url);
@@ -102,5 +106,29 @@ public class UsersRemoteDataSource implements UsersDataSource {
     public void refreshUsers() {
         // Not required because the {@link UsersRepository} handles the logic of refreshing the
         // Users from all the available data sources.
+    }
+
+    @Override
+    public void followUser(@NonNull User user) {
+        user.setFollowed(true);
+        USERS_SERVICE_DATA.put(String.valueOf(user.getUser_id()), user);
+    }
+
+    @Override
+    public void unfollowUser(@NonNull User user) {
+        user.setFollowed(false);
+        USERS_SERVICE_DATA.put(String.valueOf(user.getUser_id()), user);
+    }
+
+    @Override
+    public void blockUser(@NonNull User user) {
+        user.setBlocked(true);
+        USERS_SERVICE_DATA.put(String.valueOf(user.getUser_id()), user);
+    }
+
+    @Override
+    public void unblockUser(@NonNull User user) {
+        user.setBlocked(false);
+        USERS_SERVICE_DATA.put(String.valueOf(user.getUser_id()), user);
     }
 }

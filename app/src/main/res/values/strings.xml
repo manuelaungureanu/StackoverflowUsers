@@ -22,4 +22,8 @@
     <string name="block">Block</string>
     <string name="blocked">Blocked</string>
     <string name="unblock">Unblock</string>
+    <string name="user_followed">User Followed</string>
+    <string name="user_unfollowed">User Unfollowed</string>
+    <string name="user_blocked">User Blocked</string>
+    <string name="user_unblocked">User Unblocked</string>
 </resources>

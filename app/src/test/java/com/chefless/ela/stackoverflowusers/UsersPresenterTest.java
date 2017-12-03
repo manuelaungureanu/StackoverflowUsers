@@ -96,4 +96,24 @@ public class UsersPresenterTest {
         // Then an error message is shown
         verify(mView).showLoadingUsersError();
     }
+
+    @Test
+    public void clickOnFollowUser(){
+        User userToFollow = new User(678, "Aquaman", 799435, "US, NY");
+
+        // When the loader finishes with tasks and filter is set to all
+        mPresenter.onLoadFinished(mock(Loader.class), UserS);
+        mPresenter.followUser(userToFollow, 2);
+        verify(mView).showUserFollowed(2);
+    }
+
+    @Test
+    public void clickOnBlockUser(){
+        User userToBlock = new User(345, "Superman", 546780, "France, Paris");
+
+        // When the loader finishes with tasks and filter is set to all
+        mPresenter.onLoadFinished(mock(Loader.class), UserS);
+        mPresenter.blockUser(userToBlock, 1);
+        verify(mView).showUserBlocked(1);
+    }
 }

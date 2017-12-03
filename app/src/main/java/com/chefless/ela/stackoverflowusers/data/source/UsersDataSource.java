@@ -26,4 +26,12 @@ public interface UsersDataSource {
     User getUser(@NonNull int userId);
 
     void refreshUsers();
+
+    void followUser(@NonNull User user);
+
+    void unfollowUser(@NonNull User user);
+
+    void blockUser(@NonNull User user);
+
+    void unblockUser(@NonNull User user);
 }

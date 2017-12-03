@@ -78,8 +78,6 @@ public class UsersRepositoryTest {
         verify(mRemoteDataSource).getUsers();
     }
 
-
-
     @Test
     public void getUsersWithDataSourceUnavailable_returnsNull() {
         /// Given unavailable Users in both data sources
@@ -151,4 +149,6 @@ public class UsersRepositoryTest {
     private void setUserAvailable(UsersDataSource dataSource, User User) {
         when(dataSource.getUser(User.getUser_id())).thenReturn(User);
     }
+
+
 }

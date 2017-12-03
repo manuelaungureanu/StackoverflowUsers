@@ -47,10 +47,6 @@ public class UsersPresenter implements UsersContract.Presenter,
     }
 
     @Override
-    public void result(int requestCode, int resultCode) {
-    }
-
-    @Override
     public void start() {
         mLoaderManager.initLoader(USERS_QUERY, null, this);
     }
@@ -108,5 +104,34 @@ public class UsersPresenter implements UsersContract.Presenter,
     public void openUserDetails(@NonNull User requestedUser) {
         checkNotNull(requestedUser, "requestedUser cannot be null!");
         mUsersView.showUserDetailsUi(requestedUser.getUser_id());
+    }
+
+    @Override
+    public void followUser(@NonNull User user, int position) {
+        checkNotNull(user, "user cannot be null!");
+        mUsersRepository.followUser(user);
+        mUsersView.showUserFollowed(position);
+        //loadUsers(false);
+    }
+
+    @Override
+    public void unfollowUser(@NonNull User user, int position) {
+        checkNotNull(user, "user cannot be null!");
+        mUsersRepository.unfollowUser(user);
+        mUsersView.showUserUnfollowed(position);
+    }
+
+    @Override
+    public void blockUser(@NonNull User user, int position) {
+        checkNotNull(user, "user cannot be null!");
+        mUsersRepository.blockUser(user);
+        mUsersView.showUserBlocked(position);
+    }
+
+    @Override
+    public void unblockUser(@NonNull User user, int position) {
+        checkNotNull(user, "user cannot be null!");
+        mUsersRepository.unblockUser(user);
+        mUsersView.showUserUnBlocked(position);
     }
 }

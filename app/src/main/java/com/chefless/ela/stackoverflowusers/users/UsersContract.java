@@ -24,14 +24,28 @@ public interface UsersContract {
         void showLoadingUsersError();
 
         void showNoUsers();
+
+        void showUserFollowed(int position);
+
+        void showUserUnfollowed(int position);
+
+        void showUserBlocked(int position);
+
+        void showUserUnBlocked(int position);
     }
 
     interface Presenter extends BasePresenter {
 
-        void result(int requestCode, int resultCode);
-
         void loadUsers(boolean forceUpdate);
 
         void openUserDetails(@NonNull User requestedUser);
+
+        void followUser(@NonNull User user, int position);
+
+        void unfollowUser(@NonNull User user, int position);
+
+        void blockUser(@NonNull User user, int position);
+
+        void unblockUser(@NonNull User user, int position);
     }
 }

@@ -1,17 +1,13 @@
 package com.chefless.ela.stackoverflowusers.users;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
-import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.chefless.ela.stackoverflowusers.R;
@@ -32,10 +28,15 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserAdapterV
     private final UsersAdapterOnClickHandler mClickHandler;
 
     /**
-     * The interface that receives onClick messages.
+     * The interface that receives onClickOnItem messages.
      */
     public interface UsersAdapterOnClickHandler {
-        void onClick(User user);
+        void onClickOnItem(User user);
+        void onFollowClick(User user, int position);
+        void onUnfollowClick(User user, int position);
+        void onBlockClick(User user, int position);
+        void onUnBlockClick(User user, int position);
+        //void onFollowingTouch
     }
 
     public UsersAdapter(UsersAdapterOnClickHandler clickHandler) {
@@ -74,8 +75,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserAdapterV
         holder.binding.btnFollowUnfollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item.setFollowed(!item.isFollowed());
-                notifyItemChanged(position);
+                if(item.isFollowed())
+                    mClickHandler.onUnfollowClick(item, position);
+                else
+                    mClickHandler.onFollowClick(item, position);
             }
         });
 
@@ -94,8 +97,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserAdapterV
         holder.binding.btnBlockUnblock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item.setBlocked(!item.isBlocked());
-                notifyItemChanged(position);
+
+                if(item.isBlocked())
+                    mClickHandler.onUnBlockClick(item, position);
+                else
+                    mClickHandler.onBlockClick(item, position);
+
+                //item.setBlocked(!item.isBlocked());
+                //notifyItemChanged(position);
             }
         });
 
@@ -145,7 +154,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserAdapterV
         public void onClick(View view) {
             int position = getAdapterPosition();
             User user = mData.get(position);
-            mClickHandler.onClick(user);
+            mClickHandler.onClickOnItem(user);
         }
     }
 }

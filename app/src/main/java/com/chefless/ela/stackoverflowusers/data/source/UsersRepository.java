@@ -30,13 +30,13 @@ public class UsersRepository implements UsersDataSource {
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    Map<String, User> mCachedUsers;
+    private Map<String, User> mCachedUsers;
 
     /**
      * Marks the cache as invalid, to force an update the next time com.chefless.ela.stackoverflowusers.data is requested. This variable
      * has package local visibility so it can be accessed from tests.
      */
-    boolean mCacheIsDirty;
+    private boolean mCacheIsDirty;
 
     public static UsersRepository getInstance(UsersDataSource usersRemoteDataSource) {
         if (INSTANCE == null) {
@@ -155,6 +155,64 @@ public class UsersRepository implements UsersDataSource {
     public void refreshUsers() {
         mCacheIsDirty = true;
         notifyContentObserver();
+    }
+
+    @Override
+    public void followUser(@NonNull User user) {
+
+        checkNotNull(user);
+        mUsersRemoteDataSource.followUser(user);
+
+        user.setFollowed(true);
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedUsers == null) {
+            mCachedUsers = new LinkedHashMap<>();
+        }
+        mCachedUsers.put(String.valueOf(user.getUser_id()), user);
+        //notifyContentObserver();
+    }
+
+    @Override
+    public void unfollowUser(@NonNull User user) {
+
+        checkNotNull(user);
+        mUsersRemoteDataSource.unfollowUser(user);
+
+        user.setFollowed(false);
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedUsers == null) {
+            mCachedUsers = new LinkedHashMap<>();
+        }
+        mCachedUsers.put(String.valueOf(user.getUser_id()), user);
+        //notifyContentObserver();
+    }
+
+    @Override
+    public void blockUser(@NonNull User user) {
+        checkNotNull(user);
+        mUsersRemoteDataSource.blockUser(user);
+
+        user.setBlocked(true);
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedUsers == null) {
+            mCachedUsers = new LinkedHashMap<>();
+        }
+        mCachedUsers.put(String.valueOf(user.getUser_id()), user);
+        //notifyContentObserver();
+    }
+
+    @Override
+    public void unblockUser(@NonNull User user) {
+        checkNotNull(user);
+        mUsersRemoteDataSource.unblockUser(user);
+
+        user.setBlocked(false);
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedUsers == null) {
+            mCachedUsers = new LinkedHashMap<>();
+        }
+        mCachedUsers.put(String.valueOf(user.getUser_id()), user);
+        //notifyContentObserver();
     }
 
     public interface UsersRepositoryObserver {

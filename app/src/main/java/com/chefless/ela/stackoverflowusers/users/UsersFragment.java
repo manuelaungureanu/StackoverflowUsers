@@ -51,10 +51,6 @@ public class UsersFragment extends Fragment implements UsersContract.View, Users
 
     private ProgressBar mLoadingIndicator;
 
-    private TextView mTotalPagesNoView;
-
-    private EditText mBudgetView;
-
     public UsersFragment() {
         // Required empty public constructor
     }
@@ -162,6 +158,30 @@ public class UsersFragment extends Fragment implements UsersContract.View, Users
         showNoUsersViews(getResources().getString(R.string.no_users_all));
     }
 
+    @Override
+    public void showUserFollowed(int position) {
+        showMessage(getResources().getString(R.string.user_followed));
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void showUserUnfollowed(int position) {
+        showMessage(getResources().getString(R.string.user_unfollowed));
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void showUserBlocked(int position) {
+        showMessage(getResources().getString(R.string.user_blocked));
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void showUserUnBlocked(int position) {
+        showMessage(getResources().getString(R.string.user_unblocked));
+        mAdapter.notifyItemChanged(position);
+    }
+
     private void showNoUsersViews(String mainText) {
         mUsersView.setVisibility(View.GONE);
         mNoUsersView.setVisibility(View.VISIBLE);
@@ -170,8 +190,32 @@ public class UsersFragment extends Fragment implements UsersContract.View, Users
 
     //region UsersAdapter.UsersAdapterOnClickHandler implementation
     @Override
-    public void onClick(User user) {
+    public void onClickOnItem(User user) {
         mPresenter.openUserDetails(user);
     }
+
+    @Override
+    public void onFollowClick(User user, int position) {
+        mPresenter.followUser(user, position);
+    }
+
+    @Override
+    public void onUnfollowClick(User user, int position) {
+        mPresenter.unfollowUser(user, position);
+    }
+
+    @Override
+    public void onBlockClick(User user, int position) {
+        if(user.isFollowed()) {
+            mPresenter.unfollowUser(user, position);
+        }
+        mPresenter.blockUser(user, position);
+    }
+
+    @Override
+    public void onUnBlockClick(User user, int position) {
+        mPresenter.unblockUser(user, position);
+    }
+
     //endregion
 }
